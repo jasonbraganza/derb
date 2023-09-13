@@ -3,7 +3,7 @@ Utility to create an RSS feed from a bunch of files in a given path.
 I need to serve audio files to my family, and serving them up as a feed, so that they could subscribe to it as a podcast seemed like a good idea. 
 
 ## Why is this called derb?  
-Because it was the first name that popped up when I used first random name generator site I looked for. It’s just a nice sounding, random noun.
+Because it was the first name that popped up when I used the first random name generator site I looked for, on the web. It’s just a fun, nice sounding, random noun.
   
 ## What does this do?
 Derb generates an podcast feed for all the audio files in a directory. No it does not recurse.  
