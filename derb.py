@@ -13,7 +13,11 @@ from feedgen.feed import FeedGenerator
 from tinytag import TinyTag
 
 # Set up basic stuff. Get a folder and build a sorted list of audio files
-base_url = "https://ab.janusworx.com/"
+# Set base_url to the website that will serve your podcast/audiobook files
+# base_url = "https://your-web-site"
+
+base_url = ""
+
 book_folder = input("Paste path to audiobook folder here: ")
 book_out_path = base_url + (book_folder.split("/")[-1])
 file_list = os.walk(book_folder)
@@ -31,7 +35,7 @@ except IndexError as e:
 audio_files = []
 for each_file in all_files:
     each_file = Path(each_file)
-    if each_file.suffix in ['.mp3', '.m4a', '.m4b']:
+    if each_file.suffix in ['.mp3', '.m4a', '.m4b']: # add other audio file extensions if you use them
         audio_files.append(str(each_file))
 audio_files = sorted(audio_files)
 
@@ -51,18 +55,15 @@ audio_book_feed.load_extension("podcast")
 
 ## Setting up more stuff on the feed proper
 audio_book_feed.id(
-    "https://ab.janusworx.com")  # atom thing. should normally be the base website itself if you have one. and i do :)
+    base_url)  # atom thing. should normally be the base website itself if you have one. and i do :)
 audio_book_feed.title(feed_title)  # title of the audiobook/podcast
 audio_book_feed.author({"name": "Jason Braganza", "email": "feedback@janusworx.com"})  # feed author
-
 ### link to the feed relative to the id you set or just put in the full link and say rel='self'.
 ### i’d prefer being explicit for now. recommended atom thing
 ### https://validator.w3.org/feed/docs/atom.html#link
 audio_book_feed.link(href=f'{book_out_path}', rel='self')
-
 ### language. rss thing. feedgen does something to also set xml:lang in atom. good to have
 audio_book_feed.language('en')
-
 audio_book_feed.podcast.itunes_category('Private')  # just tellin’ folks this is only for me
 audio_book_feed.description(feed_title)
 
@@ -71,6 +72,8 @@ audio_book_feed.description(feed_title)
 for each_file in audio_files:
     # Mime types m4a/b - 'audio/x-m4a'
     # mp3 - 'audio/mpeg'
+    # if you have other formats, use the python magic package to figure out the mime type and set
+    # `episode_mime_type` accordingly
     each_file_metadata = TinyTag.get(Path(book_folder, each_file))
     episode_file_path = Path(each_file)
     episode_suffix = episode_file_path.suffix
