@@ -57,7 +57,7 @@ audio_book_feed.load_extension("podcast")
 audio_book_feed.id(
     base_url)  # atom thing. should normally be the base website itself if you have one. and i do :)
 audio_book_feed.title(feed_title)  # title of the audiobook/podcast
-audio_book_feed.author({"name": "Jason Braganza", "email": "feedback@janusworx.com"})  # feed author
+audio_book_feed.author({"name": "your-name", "email": "your-email@domain-here"})  # feed author
 ### link to the feed relative to the id you set or just put in the full link and say rel='self'.
 ### i’d prefer being explicit for now. recommended atom thing
 ### https://validator.w3.org/feed/docs/atom.html#link
