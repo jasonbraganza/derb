@@ -10,6 +10,7 @@
 
 import sys
 import os
+import datetime
 from pathlib import Path
 from feedgen.feed import FeedGenerator
 from tinytag import TinyTag
@@ -21,6 +22,8 @@ BASE_URL = ""
 AUTHOR_NAME = ""
 AUTHOR_EMAIL = ""
 
+# Get time to work with.
+current_time = datetime.datetime.now()
 
 # Set up basic stuff. Get a folder and build a sorted list of audio files
 book_folder = input("Paste path to audiobook folder here: ")
@@ -93,17 +96,21 @@ episode_dict = dict(sorted(rough_episode_dict.items()))
 
 ## Now actually create entries in the dict, using values from the sorted dict
 for each_episode in episode_dict.values():
+    # The generator only has precision upto seconds. So we manually increment by a second for each episode
+    current_time = current_time + datetime.timedelta(seconds=1)
     # Unpack stuff
     episode_title = each_episode[1]
     episode_link = each_episode[2]
     episode_size = each_episode[3]
     episode_mime_type = each_episode[4]
     episode_suffix = each_episode[5]
+    episode_date = f'{datetime.datetime.strftime(current_time, "%Y-%m-%d %H:%M:%S")} +05:30'
     # Create a feed entry
     audio_episode = audio_book_feed.add_entry()
     audio_episode.title(episode_title)
     audio_episode.id(episode_link)
     audio_episode.enclosure(episode_link, episode_size, episode_mime_type)
+    audio_episode.pubDate(episode_date)
 
 # Write the rss feed to the same folder as the source audio files
 audio_book_feed.rss_file(f"{book_folder}/feed.xml", pretty=True)
