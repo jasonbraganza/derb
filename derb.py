@@ -49,13 +49,20 @@ audio_files = sorted(audio_files)
 
 # Setup a feed
 ## Grab feed metadata from the first audio file
-feed_metadata_file = TinyTag.get(Path(book_folder, audio_files[0]))
+feed_metadata_file = TinyTag.get(Path(book_folder, audio_files[0]), image=True)
 
 ## Grab title from metadata file.
 ## At the same time, break out if there isn’t any.
 if not feed_metadata_file.album:
     sys.exit("\n---\nStopping feed creation.\nSetup audio file metadata with a tag editor")
 feed_title = feed_metadata_file.album
+
+## Extract cover art from the first file and then write it to a file to use
+## as art for the main feed
+cover_art = feed_metadata_file.images.any
+if cover_art:
+    with open(f'{book_folder}/cover_art.jpg', 'wb') as img_to_write:
+        img_to_write.write(cover_art.data)
 
 ## Creating feed instance
 audio_book_feed = FeedGenerator()
@@ -70,7 +77,10 @@ audio_book_feed.author({"name": AUTHOR_NAME, "email": AUTHOR_EMAIL})  # feed aut
 ### link to the feed relative to the id you set or just put in the full link and say rel='self'.
 ### i’d prefer being explicit for now. recommended atom thing
 ### https://validator.w3.org/feed/docs/atom.html#link
-audio_book_feed.link(href=f'{book_out_url}', rel='self')
+audio_book_feed.link(href=f'{book_out_url}/feed.xml', rel='self')
+### Add cover art link to the feed
+if cover_art:
+    audio_book_feed.image(url=f"{book_out_path}/cover_art.jpg")
 ### language. rss thing. feedgen does something to also set xml:lang in atom. good to have
 audio_book_feed.language('en')
 audio_book_feed.podcast.itunes_category('Private')  # just tellin’ folks this is only for me
