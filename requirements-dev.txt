@@ -1,3 +1,4 @@
 feedgen
 jupyter
 tinytag
+python-dotenv

@@ -163,3 +163,4 @@ cython_debug/
 
 # MJB generated feed files
 feed.xml
+.env.*

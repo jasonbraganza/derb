@@ -14,13 +14,32 @@ import datetime
 from pathlib import Path
 from feedgen.feed import FeedGenerator
 from tinytag import TinyTag
+from dotenv import load_dotenv
 
-# User supplied info
-# Set BASE_URL to the website that will serve your podcast/audiobook files
-# BASE_URL = "https://your-web-site"
-BASE_URL = ""
-AUTHOR_NAME = ""
-AUTHOR_EMAIL = ""
+# Set your all the required details in a .env
+# or a .env.xxx for different environments
+# Load in appropriate settings for the scenario / environment we need (base/fiction/non-fiction etc.)
+# based on the value of BOOK_ENV passed in
+BOOK_ENV = os.environ.get('BOOK_ENV')
+if BOOK_ENV:
+    envpath = f'.env.{BOOK_ENV}'
+    if not load_dotenv(dotenv_path=envpath):
+        print('\nLoading default config')
+        print(f'-' * 25)
+        load_dotenv()
+else:
+    print('\nLoading default config')
+    print(f'-' * 25)
+    load_dotenv()
+
+# Get user supplied info from the .env file passed in.
+BASE_URL = os.environ.get("BASE_URL")
+print(f'URL to audiobook: {BASE_URL}')
+AUTHOR_NAME = os.environ.get("AUTHOR_NAME")
+print(f'Feed Author Name: {AUTHOR_NAME}')
+AUTHOR_EMAIL = os.environ.get("AUTHOR_EMAIL")
+print(f'Feed Author Email: {AUTHOR_EMAIL}')
+print('\n')
 
 # Get time to work with.
 current_time = datetime.datetime.now()
@@ -80,7 +99,7 @@ audio_book_feed.author({"name": AUTHOR_NAME, "email": AUTHOR_EMAIL})  # feed aut
 audio_book_feed.link(href=f'{book_out_url}/feed.xml', rel='self')
 ### Add cover art link to the feed
 if cover_art:
-    audio_book_feed.image(url=f"{book_out_path}/cover_art.jpg")
+    audio_book_feed.image(url=f"{book_out_url}/cover_art.jpg")
 ### language. rss thing. feedgen does something to also set xml:lang in atom. good to have
 audio_book_feed.language('en')
 audio_book_feed.podcast.itunes_category('Private')  # just tellin’ folks this is only for me
