@@ -26,5 +26,5 @@ Derb generates an podcast feed for all the audio files in a directory. No it doe
 - Move said folder to your website, so it can be served
 
 # Gratitude
-To Tom Wallroth’s (@devsnd) [Tinytag](https://github.com/devsnd/tinytag) and  Lars Kiesow’s (@lkiesow) [Feedgenerator](https://github.com/lkiesow/python-feedgen).  
+To [Tom Wallroth](https://github.com/devsnd)’s (@devsnd) [Tinytag](https://github.com/devsnd/tinytag) and  [Lars Kiesow](https://github.com/lkiesow)’s (@lkiesow) [Feedgenerator](https://github.com/lkiesow/python-feedgen).  
 They made it easy to whip up a tiny script like this.
