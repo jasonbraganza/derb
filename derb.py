@@ -16,21 +16,25 @@ from feedgen.feed import FeedGenerator
 from tinytag import TinyTag
 from dotenv import load_dotenv
 
+# Figure out working directory of the script, to pull in the environment from
+script_cwd = os.path.dirname(os.path.abspath(__file__))
+
 # Set your all the required details in a .env
 # or a .env.xxx for different environments
 # Load in appropriate settings for the scenario / environment we need (base/fiction/non-fiction etc.)
 # based on the value of BOOK_ENV passed in
 BOOK_ENV = os.environ.get('BOOK_ENV')
+DEFAULT_ENV_PATH = f"{script_cwd}/.env"
 if BOOK_ENV:
-    envpath = f'.env.{BOOK_ENV}'
+    envpath = f'{script_cwd}/.env.{BOOK_ENV}'
     if not load_dotenv(dotenv_path=envpath):
         print('\nLoading default config')
         print(f'-' * 25)
-        load_dotenv()
+        load_dotenv(DEFAULT_ENV_PATH)
 else:
     print('\nLoading default config')
     print(f'-' * 25)
-    load_dotenv()
+    load_dotenv(DEFAULT_ENV_PATH)
 
 # Get user supplied info from the .env file passed in.
 BASE_URL = os.environ.get("BASE_URL")
