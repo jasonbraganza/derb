@@ -66,7 +66,7 @@ for each_file in all_files:
         audio_files.append(str(each_file))
 audio_files = sorted(audio_files)
 
-# Setup a feed
+# Set up a feed
 ## Grab feed metadata from the first audio file
 feed_metadata_file = TinyTag.get(Path(book_folder, audio_files[0]), image=True)
 
@@ -89,12 +89,12 @@ audio_book_feed.load_extension("podcast")
 
 ## Setting up more stuff on the feed proper
 audio_book_feed.id(
-    BASE_URL)  # atom thing. should normally be the base website itself if you have one. and i do :)
+    BASE_URL)  # atom thing. should normally be the base website itself if you have one. and I do :)
 audio_book_feed.title(feed_title)  # title of the audiobook/podcast
 audio_book_feed.author({"name": AUTHOR_NAME, "email": AUTHOR_EMAIL})  # feed author
 
 ### link to the feed relative to the id you set or just put in the full link and say rel='self'.
-### i’d prefer being explicit for now. recommended atom thing
+### I’d prefer being explicit for now. recommended atom thing
 ### https://validator.w3.org/feed/docs/atom.html#link
 audio_book_feed.link(href=f'{book_out_url}/feed.xml', rel='self')
 ### Add cover art link to the feed
@@ -103,11 +103,15 @@ if cover_art:
 ### language. rss thing. feedgen does something to also set xml:lang in atom. good to have
 audio_book_feed.language('en')
 audio_book_feed.podcast.itunes_category('Private')  # just tellin’ folks this is only for me
-audio_book_feed.description(feed_title)
+### Get description from metadata or set it to title
+if feed_metadata_file.comment:
+    audio_book_feed.description(feed_metadata_file.comment)
+else:
+    audio_book_feed.description(feed_metadata_file.title)
 
 # Loop the file list and create entries in the feed
 
-## Setup an empty dict to hold all the raw episode entries; keys ought to be the episode number
+## Set up an empty dict to hold all the raw episode entries; keys ought to be the episode number
 rough_episode_dict = {}
 for each_file in audio_files:
     each_file_metadata = TinyTag.get(Path(book_folder, each_file))
