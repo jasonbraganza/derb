@@ -1,4 +1,10 @@
-# derb
+# derb is retired
+Derb is essentially feature complete; it does all I want it to do.  
+Hence the freeze.  
+The only thing I really need, is a single executable that I can easily distribute, so I’m reinventing the wheel with [ReDerb](https://github.com/jasonbraganza/rederb).  
+ReDerb is still very much an unfinished work in progress as of 2025-03-08. I’ll update it when I consider it done.   
+
+## derb
 Utility to create an RSS feed from a bunch of files in a given path.  
 I need to serve audio files to my family, and serving them up as a feed, so that they could subscribe to it as a podcast seemed like a good idea. 
 
